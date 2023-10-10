@@ -2,6 +2,7 @@
 // allows the user to upload a headshot image via the form field
 import React, { useState } from "react";
 import Loading from "./Loading";
+import axios from "axios";
 
 const Home = () => {
     const [fullName, setFullName] = useState("");
@@ -32,13 +33,28 @@ const Home = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log({
-            fullName,
-            currentPosition,
-            currentLength,
-            currentTechnologies,
-            headshot,
-        });
+
+        // submit form data to Node.js server
+        // creates key-value pair representing form fields and their values
+        const formData = new FormData();
+        formData.append("headshotImage", headshot, headshot.name);
+        formData.append("fullName", fullName);
+        formData.append("currentPosition", currentPosition);
+        formData.append("currentLength", currentLength);
+        formData.append("currentTechnologies", currentTechnologies);
+        formData.append("workHistory", JSON.stringify(companyInfo));
+
+        // above key-value pairs are sent via Axios to the API endpoint on the server
+        axios
+            .post("http://localhost:4000/resume/create", formData, {})
+            .then((res) => {
+                // logs the response and redirect the user to the Resume page if there is a response
+                if (res.data.message) {
+                    console.log(res.data.data);
+                    navigate("/resume");
+                }
+            })
+            .catch((err) => console.error(err));
         setLoading(true);
     };
     // renders the Loading component you submit the form
