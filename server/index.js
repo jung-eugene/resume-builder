@@ -27,6 +27,8 @@ const configuration = new Configuration ({
 const openai = new OpenAIApi(configuration);
 
 // func that accepts text prompt as parameter and returns an AI-generated result
+// use text-davinci-003 model to generate an appropriate answer to prompt
+// other key values helps generate the specific type of response we need
 const GPTFunction = async (text) => {
     const response = await openai.createCompletion({
         model: "text-davinci-003",
