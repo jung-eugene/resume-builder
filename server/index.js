@@ -17,6 +17,15 @@ app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
 
+// config OpenAI API
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration ({
+    apiKey: "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",
+});
+
+const openai = new OpenAIApi(configuration);
+
 // accepts all form inputs from React App
 // upload.single("headshotImage") func adds the image uploaded via the form
 // to the uploads folder
