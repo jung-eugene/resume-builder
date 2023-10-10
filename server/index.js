@@ -13,10 +13,6 @@ app.get("/api", (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
-});
-
 // config OpenAI API
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -42,7 +38,7 @@ const GPTFunction = async (text) => {
     return response.data.choices[0].text;
 };
 
-// accepts all form inputs from React App
+// accepts all form inputs from client
 // upload.single("headshotImage") func adds the image uploaded via the form
 // to the uploads folder
 app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
@@ -51,13 +47,24 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
         currentPosition,
         currentLength,
         currentTechnologies,
-        workHistory,
+        workHistory, //JSON format
     } = req.body;
 
-    console.log(req.body);
+    // convert workHistory into its original data structure (an array)
+    const workArray = JSON.parse(workHistory);
 
-    res.json({
-        message: "Request successful!",
-        data: {},
-    });
+    // group the values into an object
+    const newEntry = {
+        id: generateID(),
+        fullName,
+        image_url: `http://localhost:4000/uploads/${req.file.filename}`,
+        currentPosition,
+        currentLength,
+        currentTechnologies,
+        workHistory: workArray,
+    };
+});
+
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
 });
