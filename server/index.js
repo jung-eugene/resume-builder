@@ -26,6 +26,20 @@ const configuration = new Configuration ({
 
 const openai = new OpenAIApi(configuration);
 
+// func that accepts text prompt as parameter and returns an AI-generated result
+const GPTFunction = async (text) => {
+    const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: text,
+        temperature: 0.6,
+        max_tokens: 250,
+        top_p: 1,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+    });
+    return response.data.choices[0].text;
+};
+
 // accepts all form inputs from React App
 // upload.single("headshotImage") func adds the image uploaded via the form
 // to the uploads folder
