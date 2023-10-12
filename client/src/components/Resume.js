@@ -1,6 +1,7 @@
 // shows resume generated from OpenAI API in a printable format
-import React from "react";
 import ErrorPage from "./ErrorPage";
+import { useReactToPrint } from "react-to-print";
+import React, { useRef } from "react";
 
 const Resume = ({ result }) => {
     // func that replaces the new line with a break tag
