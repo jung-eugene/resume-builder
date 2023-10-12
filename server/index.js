@@ -1,7 +1,9 @@
+const Configuration = require("openai");
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const PORT = 4000;
+const multer = require("multer");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -13,14 +15,22 @@ app.get("/api", (req, res) => {
     });
 });
 
-// config OpenAI API
-const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration ({
-    apiKey: "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",
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "uploads");
+	},
+	filename: (req, file, cb) => {
+		cb(null, Date.now() + path.extname(file.originalname));
+	},
 });
 
-const openai = new OpenAIApi(configuration);
+const upload = multer({
+	storage: storage,
+	limits: { fileSize: 1024 * 1024 * 5 },
+});
+
+const OPENAI_API_KEY = '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';
+const client = new Configuration ({ apiKey: OPENAI_API_KEY });
 
 // stores AI-generated result
 let database = [];
@@ -29,7 +39,7 @@ let database = [];
 // use text-davinci-003 model to generate an appropriate answer to prompt
 // other key values helps generate the specific type of response we need
 const GPTFunction = async (text) => {
-    const response = await openai.createCompletion({
+    const response = await client.createCompletion({
         model: "text-davinci-003",
         prompt: text,
         temperature: 0.6,
