@@ -22,6 +22,9 @@ const configuration = new Configuration ({
 
 const openai = new OpenAIApi(configuration);
 
+// stores AI-generated result
+let database = [];
+
 // func that accepts text prompt as parameter and returns an AI-generated result
 // use text-davinci-003 model to generate an appropriate answer to prompt
 // other key values helps generate the specific type of response we need
@@ -89,6 +92,15 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
     const chatgptData = { objective, keypoints, jobResponsibilities };
     // log the result
     console.log(chatgptData);
+
+    // return AI-generated result and user info entered
+    const data = { ...newEntry, ...chatgptData };
+    database.push(data);
+
+    res.json({
+        message: "Request successful!",
+        data,
+    });
 });
 
 
