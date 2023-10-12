@@ -23,6 +23,7 @@ const Home = () => {
         list.splice(index, 1);
         setCompanyInfo(list);
     };
+
     // updates an item within the list
     const handleUpdateCompany = (e, index) => {
         const { name, value } = e.target;
@@ -50,13 +51,15 @@ const Home = () => {
             .then((res) => {
                 // logs the response and redirect the user to the Resume page if there is a response
                 if (res.data.message) {
-                    console.log(res.data.data);
+                    // update result object
+                    setResult(res.data.data);
                     navigate("/resume");
                 }
             })
             .catch((err) => console.error(err));
         setLoading(true);
     };
+
     // renders the Loading component you submit the form
     if (loading) {
         return <Loading />;
