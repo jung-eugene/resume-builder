@@ -6,10 +6,11 @@ import React, { useRef } from "react";
 const Resume = ({ result }) => {
     const componentRef = useRef();
 
+    // prints resume
     const handlePrint = useReactToPrint({
         // prints elements within componentRef
         content: () => componentRef.current,
-        // set document title to user's full name
+        // set document name to user's full name
         documentTitle: `${result.fullName} Resume`,
         // runs alert func if user prints form
         onAfterPrint: () => alert("Print successful!"),
