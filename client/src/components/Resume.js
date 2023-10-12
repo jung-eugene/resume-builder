@@ -13,11 +13,11 @@ const Resume = ({ result }) => {
         return <ErrorPage />;
     }
 
-    // preview result within React app
+    // prints resume
     const handlePrint = () => alert("Printing...");
     return (
         <>
-            <button onClick={handlePrint}>Print Page</button>
+            <button onClick={handlePrint}>Print Resume</button>
             <main className='container' ref={componentRef}>
                 <header className='header'>
                     <div>
