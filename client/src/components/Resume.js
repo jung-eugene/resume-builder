@@ -4,6 +4,17 @@ import { useReactToPrint } from "react-to-print";
 import React, { useRef } from "react";
 
 const Resume = ({ result }) => {
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        // prints elements within componentRef
+        content: () => componentRef.current,
+        // set document title to user's full name
+        documentTitle: `${result.fullName} Resume`,
+        // runs alert func if user prints form
+        onAfterPrint: () => alert("Print successful!"),
+    });
+
     // func that replaces the new line with a break tag
     const replaceWithBr = (string) => {
         return string.replace(/\n/g, "<br />")
@@ -14,8 +25,6 @@ const Resume = ({ result }) => {
         return <ErrorPage />;
     }
 
-    // prints resume
-    const handlePrint = () => alert("Printing...");
     return (
         <>
             <button onClick={handlePrint}>Print Resume</button>
